@@ -2,14 +2,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>25th March</title>
-
+<title>25 March</title>
 <style>
 body{
   margin:0;
-  background:#0f0f18;
-  color:white;
-  font-family: 'Segoe UI', sans-serif;
+  background:black;
+  color:#00ffcc;
+  font-family: 'Courier New', monospace;
   overflow:hidden;
   display:flex;
   justify-content:center;
@@ -34,54 +33,38 @@ body{
   pointer-events:none;
 }
 
-h1{
-  font-size:40px;
-  margin:10px 0;
-}
-
-p{
+#terminalText{
   font-size:20px;
-  opacity:0.8;
-}
-
-button{
-  margin-top:30px;
-  padding:12px 30px;
-  font-size:18px;
-  border:none;
-  border-radius:30px;
-  cursor:pointer;
-  background:#ff4f81;
-  color:white;
-  transition:0.3s;
-}
-
-button:hover{
-  background:#ff2e6c;
-}
-
-/* Gift box */
-.box{
-  font-size:80px;
-  cursor:pointer;
-  transition:transform 0.3s ease;
-}
-
-.box:hover{
-  transform:scale(1.1);
+  white-space:pre-line;
+  max-width:90%;
 }
 
 .glow{
   font-size:50px;
+  color:white;
   animation: glow 2s infinite alternate;
 }
 
 @keyframes glow{
   from{ text-shadow:0 0 10px #ff4f81; }
-  to{ text-shadow:0 0 30px #ff9ab5; }
+  to{ text-shadow:0 0 40px #ff2e6c; }
 }
 
-/* Confetti */
+.stars{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:radial-gradient(white 1px, transparent 1px);
+  background-size:40px 40px;
+  opacity:0.1;
+  animation: moveStars 20s linear infinite;
+}
+
+@keyframes moveStars{
+  from{ background-position:0 0; }
+  to{ background-position:0 1000px; }
+}
+
 .confetti{
   position:absolute;
   font-size:20px;
@@ -94,60 +77,81 @@ button:hover{
     opacity:0;
   }
 }
+
+.fadeIn{
+  animation: fade 2s ease forwards;
+  opacity:0;
+}
+
+@keyframes fade{
+  to{ opacity:1; }
+}
 </style>
 </head>
 
 <body>
 
-<!-- SCREEN 1 -->
 <div id="screen1" class="screen">
-  <h1>📦 Incoming Delivery...</h1>
-  <p>To: Kajal</p>
-  <p>Date: 25 March</p>
-  <p>Time: 00:00</p>
-  <button onclick="openGift()">Open the Gift</button>
+  <div id="terminalText"></div>
 </div>
 
-<!-- SCREEN 2 -->
 <div id="screen2" class="screen hidden">
-  <div class="box" onclick="reveal()">🎁</div>
-  <p>Tap the gift to open</p>
-</div>
-
-<!-- SCREEN 3 -->
-<div id="screen3" class="screen hidden">
-  <h1 class="glow">Happy Birthday Kajal 🎂</h1>
-  <p>Out of 8 billion people...</p>
-  <p>25th March chose someone rare.</p>
-  <p>And I’m lucky she chose me too.</p>
-  <p style="margin-top:30px;">— Brijesh</p>
+  <div class="stars"></div>
+  <h1 class="glow fadeIn">Happy Birthday Kajal 🎂</h1>
+  <p class="fadeIn" style="animation-delay:2s">Out of 8 billion lives...</p>
+  <p class="fadeIn" style="animation-delay:4s">25th March chose someone rare.</p>
+  <p class="fadeIn" style="animation-delay:6s">And somehow, she chose me too.</p>
+  <p class="fadeIn" style="animation-delay:9s; margin-top:30px;">— Brijesh</p>
 </div>
 
 <script>
-function openGift(){
-  document.getElementById("screen1").classList.add("hidden");
-  setTimeout(()=>{
-    document.getElementById("screen2").classList.remove("hidden");
-  },800);
-}
 
-function reveal(){
-  document.getElementById("screen2").classList.add("hidden");
-  document.getElementById("screen3").classList.remove("hidden");
-  createConfetti();
+const lines = [
+"Initializing universe...",
+"Scanning human database...",
+"Searching date: 25 March...",
+"Match found.",
+"Name: Kajal",
+"Rarity Level: Unclassified",
+"",
+"Analyzing uniqueness...",
+"",
+"Result: LEGENDARY.",
+"",
+"System Override Initiated..."
+];
+
+let i = 0;
+let speed = 60;
+
+function typeLine(){
+  if(i < lines.length){
+    document.getElementById("terminalText").innerHTML += lines[i] + "\n";
+    i++;
+    setTimeout(typeLine, 800);
+  } else {
+    setTimeout(()=>{
+      document.getElementById("screen1").classList.add("hidden");
+      document.getElementById("screen2").classList.remove("hidden");
+      createConfetti();
+    },2000);
+  }
 }
 
 function createConfetti(){
-  for(let i=0;i<60;i++){
+  for(let i=0;i<80;i++){
     let c=document.createElement("div");
     c.className="confetti";
-    c.innerHTML=["🎉","🎊","✨","🎈"][Math.floor(Math.random()*4)];
+    c.innerHTML=["🎉","✨","🎊","🎈"][Math.floor(Math.random()*4)];
     c.style.left=Math.random()*100+"vw";
-    c.style.animationDuration=(Math.random()*3+2)+"s";
+    c.style.animationDuration=(Math.random()*3+3)+"s";
     document.body.appendChild(c);
-    setTimeout(()=>c.remove(),5000);
+    setTimeout(()=>c.remove(),6000);
   }
 }
+
+typeLine();
+
 </script>
 
 </body>
