@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <title>25 March</title>
+
 <style>
 body{
   margin:0;
-  background:black;
-  color:#00ffcc;
-  font-family: 'Courier New', monospace;
+  background:#0d0d16;
+  color:white;
+  font-family:'Segoe UI', sans-serif;
   overflow:hidden;
   display:flex;
   justify-content:center;
@@ -25,7 +26,7 @@ body{
   flex-direction:column;
   justify-content:center;
   align-items:center;
-  transition:opacity 1s ease;
+  transition:opacity 1.2s ease;
 }
 
 .hidden{
@@ -33,16 +34,36 @@ body{
   pointer-events:none;
 }
 
-#terminalText{
-  font-size:20px;
-  white-space:pre-line;
-  max-width:90%;
+h1{
+  font-size:45px;
+}
+
+button{
+  padding:12px 28px;
+  border:none;
+  border-radius:30px;
+  font-size:18px;
+  cursor:pointer;
+  background:#ff4f81;
+  color:white;
+  transition:0.3s;
+}
+
+button:hover{
+  background:#ff2e6c;
+}
+
+.box{
+  font-size:90px;
+  cursor:pointer;
+  transition:0.3s;
+}
+.box:hover{
+  transform:scale(1.1);
 }
 
 .glow{
-  font-size:50px;
-  color:white;
-  animation: glow 2s infinite alternate;
+  animation:glow 2s infinite alternate;
 }
 
 @keyframes glow{
@@ -56,19 +77,19 @@ body{
   height:100%;
   background:radial-gradient(white 1px, transparent 1px);
   background-size:40px 40px;
-  opacity:0.1;
-  animation: moveStars 20s linear infinite;
+  opacity:0.08;
+  animation:move 40s linear infinite;
 }
 
-@keyframes moveStars{
-  from{ background-position:0 0; }
-  to{ background-position:0 1000px; }
+@keyframes move{
+  from{background-position:0 0;}
+  to{background-position:0 1000px;}
 }
 
 .confetti{
   position:absolute;
-  font-size:20px;
-  animation: fall linear forwards;
+  font-size:22px;
+  animation:fall linear forwards;
 }
 
 @keyframes fall{
@@ -78,71 +99,81 @@ body{
   }
 }
 
-.fadeIn{
-  animation: fade 2s ease forwards;
-  opacity:0;
-}
-
-@keyframes fade{
-  to{ opacity:1; }
+.slideshow img{
+  width:220px;
+  height:300px;
+  object-fit:cover;
+  border-radius:20px;
+  box-shadow:0 0 20px rgba(255,255,255,0.3);
+  margin-top:20px;
+  display:none;
 }
 </style>
 </head>
 
 <body>
 
+<!-- SCREEN 1 -->
 <div id="screen1" class="screen">
-  <div id="terminalText"></div>
+  <h1>📦 A Midnight Delivery...</h1>
+  <p>To: Kajal</p>
+  <p>25 March • 00:00</p>
+  <button onclick="openGift()">Open</button>
 </div>
 
+<!-- SCREEN 2 -->
 <div id="screen2" class="screen hidden">
-  <div class="stars"></div>
-  <h1 class="glow fadeIn">Happy Birthday Kajal 🎂</h1>
-  <p class="fadeIn" style="animation-delay:2s">Out of 8 billion lives...</p>
-  <p class="fadeIn" style="animation-delay:4s">25th March chose someone rare.</p>
-  <p class="fadeIn" style="animation-delay:6s">And somehow, she chose me too.</p>
-  <p class="fadeIn" style="animation-delay:9s; margin-top:30px;">— Brijesh</p>
+  <div class="box" onclick="reveal()">🎁</div>
+  <p>Tap to open</p>
 </div>
+
+<!-- SCREEN 3 -->
+<div id="screen3" class="screen hidden">
+  <div class="stars"></div>
+  <h1 class="glow">Happy Birthday Kajal 🎂</h1>
+  <p>Out of 8 billion people...</p>
+  <p>25th March chose someone rare.</p>
+  <p>And I’m lucky she chose me too.</p>
+  <p style="margin-top:25px;">— Brijesh</p>
+
+  <div class="slideshow">
+    <img src="pic1.jpg" id="img1">
+    <img src="pic2.jpg" id="img2">
+    <img src="pic3.jpg" id="img3">
+  </div>
+</div>
+
+<audio id="bgMusic" src="music.mp3" loop></audio>
+<audio id="heartbeat" src="heartbeat.mp3"></audio>
 
 <script>
 
-const lines = [
-"Initializing universe...",
-"Scanning human database...",
-"Searching date: 25 March...",
-"Match found.",
-"Name: Kajal",
-"Rarity Level: Unclassified",
-"",
-"Analyzing uniqueness...",
-"",
-"Result: LEGENDARY.",
-"",
-"System Override Initiated..."
-];
+function openGift(){
+  document.getElementById("screen1").classList.add("hidden");
+  setTimeout(()=>{
+    document.getElementById("screen2").classList.remove("hidden");
+  },1000);
+}
 
-let i = 0;
-let speed = 60;
+function reveal(){
+  document.getElementById("screen2").classList.add("hidden");
 
-function typeLine(){
-  if(i < lines.length){
-    document.getElementById("terminalText").innerHTML += lines[i] + "\n";
-    i++;
-    setTimeout(typeLine, 800);
-  } else {
-    setTimeout(()=>{
-      document.getElementById("screen1").classList.add("hidden");
-      document.getElementById("screen2").classList.remove("hidden");
-      createConfetti();
-    },2000);
-  }
+  let heartbeat = document.getElementById("heartbeat");
+  heartbeat.play();
+
+  setTimeout(()=>{
+    document.getElementById("screen3").classList.remove("hidden");
+    document.getElementById("bgMusic").play();
+    createConfetti();
+    startSlideshow();
+  },2500);
 }
 
 function createConfetti(){
-  for(let i=0;i<80;i++){
+  for(let i=0;i<70;i++){
     let c=document.createElement("div");
     c.className="confetti";
-    c.innerHTML=["🎉","✨","🎊","🎈"][Math.floor(Math.random()*4)];
+    c.innerHTML=["🎉","🎊","✨","🎈"][Math.floor(Math.random()*4)];
     c.style.left=Math.random()*100+"vw";
     c.style.animationDuration=(Math.random()*3+3)+"s";
     document.body.appendChild(c);
@@ -150,7 +181,15 @@ function createConfetti(){
   }
 }
 
-typeLine();
+function startSlideshow(){
+  let images=["img1","img2","img3"];
+  let index=0;
+  setInterval(()=>{
+    document.querySelectorAll(".slideshow img").forEach(img=>img.style.display="none");
+    document.getElementById(images[index]).style.display="block";
+    index=(index+1)%images.length;
+  },3000);
+}
 
 </script>
 
