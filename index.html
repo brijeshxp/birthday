@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>25th March</title>
+
+<style>
+body{
+  margin:0;
+  background:#0f0f18;
+  color:white;
+  font-family: 'Segoe UI', sans-serif;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  text-align:center;
+}
+
+.screen{
+  position:absolute;
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  transition:opacity 1s ease;
+}
+
+.hidden{
+  opacity:0;
+  pointer-events:none;
+}
+
+h1{
+  font-size:40px;
+  margin:10px 0;
+}
+
+p{
+  font-size:20px;
+  opacity:0.8;
+}
+
+button{
+  margin-top:30px;
+  padding:12px 30px;
+  font-size:18px;
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
+  background:#ff4f81;
+  color:white;
+  transition:0.3s;
+}
+
+button:hover{
+  background:#ff2e6c;
+}
+
+/* Gift box */
+.box{
+  font-size:80px;
+  cursor:pointer;
+  transition:transform 0.3s ease;
+}
+
+.box:hover{
+  transform:scale(1.1);
+}
+
+.glow{
+  font-size:50px;
+  animation: glow 2s infinite alternate;
+}
+
+@keyframes glow{
+  from{ text-shadow:0 0 10px #ff4f81; }
+  to{ text-shadow:0 0 30px #ff9ab5; }
+}
+
+/* Confetti */
+.confetti{
+  position:absolute;
+  font-size:20px;
+  animation: fall linear forwards;
+}
+
+@keyframes fall{
+  to{
+    transform:translateY(100vh) rotate(360deg);
+    opacity:0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SCREEN 1 -->
+<div id="screen1" class="screen">
+  <h1>📦 Incoming Delivery...</h1>
+  <p>To: Kajal</p>
+  <p>Date: 25 March</p>
+  <p>Time: 00:00</p>
+  <button onclick="openGift()">Open the Gift</button>
+</div>
+
+<!-- SCREEN 2 -->
+<div id="screen2" class="screen hidden">
+  <div class="box" onclick="reveal()">🎁</div>
+  <p>Tap the gift to open</p>
+</div>
+
+<!-- SCREEN 3 -->
+<div id="screen3" class="screen hidden">
+  <h1 class="glow">Happy Birthday Kajal 🎂</h1>
+  <p>Out of 8 billion people...</p>
+  <p>25th March chose someone rare.</p>
+  <p>And I’m lucky she chose me too.</p>
+  <p style="margin-top:30px;">— Brijesh</p>
+</div>
+
+<script>
+function openGift(){
+  document.getElementById("screen1").classList.add("hidden");
+  setTimeout(()=>{
+    document.getElementById("screen2").classList.remove("hidden");
+  },800);
+}
+
+function reveal(){
+  document.getElementById("screen2").classList.add("hidden");
+  document.getElementById("screen3").classList.remove("hidden");
+  createConfetti();
+}
+
+function createConfetti(){
+  for(let i=0;i<60;i++){
+    let c=document.createElement("div");
+    c.className="confetti";
+    c.innerHTML=["🎉","🎊","✨","🎈"][Math.floor(Math.random()*4)];
+    c.style.left=Math.random()*100+"vw";
+    c.style.animationDuration=(Math.random()*3+2)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),5000);
+  }
+}
+</script>
+
+</body>
+</html>
