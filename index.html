@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>25 March</title>
 
 <style>
@@ -10,8 +11,8 @@ body{
   background:#0d0d16;
   color:white;
   font-family:'Segoe UI', sans-serif;
-  overflow-x:hidden;
   text-align:center;
+  overflow-x:hidden;
 }
 
 .screen{
@@ -20,8 +21,7 @@ body{
   flex-direction:column;
   justify-content:center;
   align-items:center;
-  transition:opacity 1.2s ease;
-  padding:20px;
+  padding:30px 20px;
 }
 
 .hidden{
@@ -29,31 +29,30 @@ body{
 }
 
 h1{
-  font-size:32px;
+  font-size:38px;
+  margin-bottom:20px;
+}
+
+p{
+  font-size:20px;
+  margin:8px 0;
 }
 
 button{
-  padding:12px 26px;
+  margin-top:25px;
+  padding:14px 32px;
+  font-size:18px;
   border:none;
   border-radius:30px;
-  font-size:16px;
-  cursor:pointer;
   background:#ff4f81;
   color:white;
-  transition:0.3s;
-}
-
-button:hover{
-  background:#ff2e6c;
+  cursor:pointer;
 }
 
 .box{
-  font-size:80px;
+  font-size:100px;
   cursor:pointer;
-  transition:0.3s;
-}
-.box:hover{
-  transform:scale(1.1);
+  margin-bottom:20px;
 }
 
 .glow{
@@ -65,9 +64,19 @@ button:hover{
   to{ text-shadow:0 0 40px #ff2e6c; }
 }
 
+.photo{
+  width:85%;
+  max-width:350px;
+  border-radius:20px;
+  margin-top:30px;
+  opacity:0;
+  transform:translateY(40px);
+  transition:all 1s ease;
+}
+
 .confetti{
   position:absolute;
-  font-size:20px;
+  font-size:22px;
   animation:fall linear forwards;
 }
 
@@ -76,24 +85,6 @@ button:hover{
     transform:translateY(100vh) rotate(360deg);
     opacity:0;
   }
-}
-
-/* Photo Grid */
-.photo-container{
-  margin-top:40px;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-  gap:15px;
-  width:100%;
-  max-width:600px;
-}
-
-.photo{
-  width:100%;
-  border-radius:15px;
-  opacity:0;
-  transform:translateY(-50px);
-  transition:all 1s ease;
 }
 </style>
 </head>
@@ -111,7 +102,7 @@ button:hover{
 <!-- SCREEN 2 -->
 <div id="screen2" class="screen hidden">
   <div class="box" onclick="reveal()">🎁</div>
-  <p>Tap to open</p>
+  <p style="font-size:22px;">Tap to open</p>
 </div>
 
 <!-- SCREEN 3 -->
@@ -120,9 +111,9 @@ button:hover{
   <p>Out of 8 billion people...</p>
   <p>25th March chose someone rare.</p>
   <p>And somehow, she chose me too.</p>
-  <p style="margin-top:20px;">— Brijesh</p>
+  <p style="margin-top:15px;">— Brijesh</p>
 
-  <div class="photo-container" id="photoContainer"></div>
+  <img id="photo" class="photo">
 </div>
 
 <audio id="bgMusic" src="music.mp3" loop></audio>
@@ -145,7 +136,7 @@ function reveal(){
     document.getElementById("screen3").classList.remove("hidden");
     document.getElementById("bgMusic").play();
     createConfetti();
-    showPhotos();
+    startPhotos();
   },2500);
 }
 
@@ -161,26 +152,32 @@ function createConfetti(){
   }
 }
 
-function showPhotos(){
+function startPhotos(){
 
   let photos=[
     "pic1.jpg","pic2.jpg","pic3.jpg","pic4.jpg",
     "pic5.jpg","pic6.jpg","pic7.jpg","pic8.jpg"
   ];
 
-  let container=document.getElementById("photoContainer");
+  let img=document.getElementById("photo");
+  let index=0;
 
-  photos.forEach((src,i)=>{
-    let img=document.createElement("img");
-    img.src=src;
-    img.className="photo";
-    container.appendChild(img);
-
+  function showNext(){
+    img.style.opacity="0";
+    img.style.transform="translateY(40px)";
+    
     setTimeout(()=>{
+      img.src=photos[index];
       img.style.opacity="1";
       img.style.transform="translateY(0)";
-    },i*400);
-  });
+      index++;
+      if(index < photos.length){
+        setTimeout(showNext,3000);
+      }
+    },400);
+  }
+
+  showNext();
 }
 
 </script>
