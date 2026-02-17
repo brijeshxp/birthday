@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>25 March</title>
+<title>HBD Kajal</title>
 
 <style>
 body{
@@ -25,23 +25,51 @@ body{
   position:relative;
 }
 
-.hidden{ display:none; }
+.hidden{
+  display:none;
+}
 
-#dynamicText{
-  font-size:22px;
-  margin-top:20px;
-  opacity:0;
-  transition:opacity 1.5s ease;
-  min-height:60px;
+h1{
+  font-size:36px;
+  margin-bottom:20px;
+  transition:all 1.5s ease;
   z-index:2;
 }
 
-#finalTitle{
-  position:absolute;
-  font-size:48px;
-  opacity:0;
-  transition:opacity 2s ease;
-  z-index:3;
+p{
+  font-size:20px;
+  margin:8px 0;
+}
+
+button{
+  margin-top:25px;
+  padding:14px 32px;
+  font-size:18px;
+  border:none;
+  border-radius:30px;
+  background:#ff4f81;
+  color:white;
+  cursor:pointer;
+}
+
+.box{
+  font-size:100px;
+  cursor:pointer;
+  margin-bottom:20px;
+}
+
+.glow{
+  animation:glow 2s infinite alternate;
+}
+
+@keyframes glow{
+  from{ text-shadow:0 0 10px #ff4f81; }
+  to{ text-shadow:0 0 40px #ff2e6c; }
+}
+
+#subText{
+  transition:opacity 1.5s ease;
+  z-index:2;
 }
 
 .photo{
@@ -76,24 +104,7 @@ body{
   background:rgba(0,0,0,0.6);
   opacity:0;
   transition:opacity 2s ease;
-  z-index:2;
-}
-
-button{
-  margin-top:25px;
-  padding:14px 32px;
-  font-size:18px;
-  border:none;
-  border-radius:30px;
-  background:#ff4f81;
-  color:white;
-  cursor:pointer;
-}
-
-.box{
-  font-size:100px;
-  cursor:pointer;
-  margin-bottom:20px;
+  z-index:1;
 }
 
 .confetti{
@@ -114,15 +125,15 @@ button{
 <body>
 
 <div id="screen1" class="screen">
-  <h1>📦 A Midnight Delivery...</h1>
+  <h1>📦 A Special Delivery...</h1>
   <p>To: Kajal</p>
-  <p>25 March • 00:00</p>
+  <p>25 March 2026 • 00:00</p>
   <button onclick="openGift()">Open</button>
 </div>
 
 <div id="screen2" class="screen hidden">
   <div class="box" onclick="reveal()">🎁</div>
-  <p style="font-size:22px;">Tap to open</p>
+  <p style="font-size:22px;"> Open at your own risk</p>
 </div>
 
 <div id="screen3" class="screen hidden">
@@ -133,9 +144,14 @@ button{
 
   <div class="darkOverlay" id="overlay"></div>
 
-  <div id="finalTitle">Happy Birthday Kajal 🎂</div>
+  <h1 id="mainTitle" class="glow">Happy Birthday Kajal 🎂</h1>
 
-  <div id="dynamicText"></div>
+  <div id="subText">
+    <p>Out of 8 billion people...</p>
+    <p>25th March chose someone rare.</p>
+    <p>And somehow, she chose us too.</p>
+    <p style="margin-top:15px;">— Brijesh, Raha & Rishan</p>
+  </div>
 
   <img id="photo" class="photo">
 
@@ -153,6 +169,7 @@ function openGift(){
 
 function reveal(){
   screen2.classList.add("hidden");
+
   heartbeat.play();
 
   setTimeout(()=>{
@@ -160,7 +177,7 @@ function reveal(){
     bgMusic.volume = 1;
     bgMusic.play();
     createConfetti();
-    startSlideshow();
+    startPhotos();
   },2500);
 }
 
@@ -176,68 +193,54 @@ function createConfetti(){
   }
 }
 
-function startSlideshow(){
+function startPhotos(){
 
   let photos=[
     "pic1.jpg","pic2.jpg","pic3.jpg","pic4.jpg",
     "pic5.jpg","pic6.jpg","pic7.jpg","pic8.jpg"
   ];
 
-  let texts=[
-    "Out of 8 billion people...",
-    "25th March chose someone rare.",
-    "And somehow, she chose us too.",
-    "— Brijesh, Raha & Rishan"
-  ];
-
   let index=0;
 
-  function nextSlide(){
-
+  function showNext(){
     photo.style.opacity="0";
-    dynamicText.style.opacity="0";
+    photo.style.transform="translateY(40px)";
 
     setTimeout(()=>{
-
-      photo.src = photos[index];
+      photo.src=photos[index];
       photo.style.opacity="1";
       photo.style.transform="translateY(0)";
-
-      if(index < texts.length){
-        dynamicText.innerHTML = texts[index];
-        dynamicText.style.opacity="1";
-      } else {
-        dynamicText.innerHTML = "";
-      }
-
       index++;
 
       if(index < photos.length){
-        setTimeout(nextSlide,3000);
+        setTimeout(showNext,3000);
       } else {
-        setTimeout(showFinalMoment,3000);
+        setTimeout(showVideo,3000);
       }
-
-    },500);
+    },400);
   }
 
-  nextSlide();
+  showNext();
 }
 
-function showFinalMoment(){
+function showVideo(){
 
   photo.style.opacity="0";
-  dynamicText.style.opacity="0";
+
+  subText.style.opacity="0";
+
   overlay.style.opacity="1";
+
+  mainTitle.style.fontSize="48px";
 
   bgMusic.volume = 0.5;
 
   setTimeout(()=>{
-    finalTitle.style.opacity="1";
     finalVideo.playbackRate = 0.65;
     finalVideo.play();
     finalVideo.style.opacity="1";
   },1500);
+
 }
 
 </script>
