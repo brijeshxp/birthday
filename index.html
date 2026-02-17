@@ -29,7 +29,7 @@ body{
 }
 
 h1{
-  font-size:38px;
+  font-size:36px;
   margin-bottom:20px;
 }
 
@@ -64,9 +64,9 @@ button{
   to{ text-shadow:0 0 40px #ff2e6c; }
 }
 
-.photo{
-  width:85%;
-  max-width:350px;
+.photo, video{
+  width:90%;
+  max-width:400px;
   border-radius:20px;
   margin-top:30px;
   opacity:0;
@@ -114,6 +114,10 @@ button{
   <p style="margin-top:15px;">— Brijesh</p>
 
   <img id="photo" class="photo">
+  
+  <video id="finalVideo" playsinline style="display:none;">
+    <source src="final.mp4" type="video/mp4">
+  </video>
 </div>
 
 <audio id="bgMusic" src="music.mp3" loop></audio>
@@ -168,16 +172,33 @@ function startPhotos(){
     
     setTimeout(()=>{
       img.src=photos[index];
+      img.style.display="block";
       img.style.opacity="1";
       img.style.transform="translateY(0)";
       index++;
       if(index < photos.length){
         setTimeout(showNext,3000);
+      } else {
+        setTimeout(showVideo,3000);
       }
     },400);
   }
 
   showNext();
+}
+
+function showVideo(){
+
+  let img=document.getElementById("photo");
+  let video=document.getElementById("finalVideo");
+
+  img.style.display="none";
+
+  video.style.display="block";
+  video.style.opacity="1";
+  video.style.transform="translateY(0)";
+  video.playbackRate = 0.6;   // slow motion
+  video.play();
 }
 
 </script>
