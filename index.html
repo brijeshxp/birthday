@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HBD Kajal</title>
+<title>25 March</title>
 
 <style>
 body{
@@ -12,7 +12,7 @@ body{
   color:white;
   font-family:'Segoe UI', sans-serif;
   text-align:center;
-  overflow-x:hidden;
+  overflow:hidden;
 }
 
 .screen{
@@ -23,7 +23,6 @@ body{
   align-items:center;
   padding:30px 20px;
   position:relative;
-  transition:transform 2s ease;
 }
 
 .hidden{
@@ -33,7 +32,8 @@ body{
 h1{
   font-size:36px;
   margin-bottom:20px;
-  transition:all 2s ease;
+  transition:all 1.5s ease;
+  z-index:2;
 }
 
 p{
@@ -68,17 +68,31 @@ button{
 }
 
 #subText{
-  transition:opacity 2s ease;
+  transition:opacity 1.5s ease;
+  z-index:2;
 }
 
-.photo, video{
+.photo{
   width:90%;
   max-width:400px;
   border-radius:20px;
   margin-top:30px;
   opacity:0;
   transform:translateY(40px);
-  transition:all 1.5s ease;
+  transition:all 1s ease;
+  z-index:2;
+}
+
+#finalVideo{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:0;
+  transition:opacity 2s ease;
+  z-index:1;
 }
 
 .darkOverlay{
@@ -87,10 +101,10 @@ button{
   left:0;
   width:100%;
   height:100%;
-  background:rgba(0,0,0,0.5);
+  background:rgba(0,0,0,0.6);
   opacity:0;
   transition:opacity 2s ease;
-  pointer-events:none;
+  z-index:1;
 }
 
 .confetti{
@@ -110,22 +124,23 @@ button{
 
 <body>
 
-<!-- SCREEN 1 -->
 <div id="screen1" class="screen">
-  <h1>📦 A Special Delivery...</h1>
+  <h1>📦 A Midnight Delivery...</h1>
   <p>To: Kajal</p>
-  <p>25 March 2026 • 00:00</p>
+  <p>25 March • 00:00</p>
   <button onclick="openGift()">Open</button>
 </div>
 
-<!-- SCREEN 2 -->
 <div id="screen2" class="screen hidden">
   <div class="box" onclick="reveal()">🎁</div>
-  <p style="font-size:22px;">Open at your own risk</p>
+  <p style="font-size:22px;">Tap to open</p>
 </div>
 
-<!-- SCREEN 3 -->
 <div id="screen3" class="screen hidden">
+
+  <video id="finalVideo" playsinline muted>
+    <source src="final.mp4" type="video/mp4">
+  </video>
 
   <div class="darkOverlay" id="overlay"></div>
 
@@ -139,10 +154,6 @@ button{
   </div>
 
   <img id="photo" class="photo">
-  
-  <video id="finalVideo" playsinline muted style="display:none;">
-    <source src="final.mp4" type="video/mp4">
-  </video>
 
 </div>
 
@@ -152,20 +163,19 @@ button{
 <script>
 
 function openGift(){
-  document.getElementById("screen1").classList.add("hidden");
-  document.getElementById("screen2").classList.remove("hidden");
+  screen1.classList.add("hidden");
+  screen2.classList.remove("hidden");
 }
 
 function reveal(){
-  document.getElementById("screen2").classList.add("hidden");
+  screen2.classList.add("hidden");
 
-  let heartbeat = document.getElementById("heartbeat");
   heartbeat.play();
 
   setTimeout(()=>{
-    document.getElementById("screen3").classList.remove("hidden");
-    document.getElementById("bgMusic").volume = 1;
-    document.getElementById("bgMusic").play();
+    screen3.classList.remove("hidden");
+    bgMusic.volume = 1;
+    bgMusic.play();
     createConfetti();
     startPhotos();
   },2500);
@@ -190,19 +200,18 @@ function startPhotos(){
     "pic5.jpg","pic6.jpg","pic7.jpg","pic8.jpg"
   ];
 
-  let img=document.getElementById("photo");
   let index=0;
 
   function showNext(){
-    img.style.opacity="0";
-    img.style.transform="translateY(40px)";
-    
+    photo.style.opacity="0";
+    photo.style.transform="translateY(40px)";
+
     setTimeout(()=>{
-      img.src=photos[index];
-      img.style.display="block";
-      img.style.opacity="1";
-      img.style.transform="translateY(0)";
+      photo.src=photos[index];
+      photo.style.opacity="1";
+      photo.style.transform="translateY(0)";
       index++;
+
       if(index < photos.length){
         setTimeout(showNext,3000);
       } else {
@@ -216,37 +225,20 @@ function startPhotos(){
 
 function showVideo(){
 
-  let img=document.getElementById("photo");
-  let video=document.getElementById("finalVideo");
-  let subText=document.getElementById("subText");
-  let mainTitle=document.getElementById("mainTitle");
-  let overlay=document.getElementById("overlay");
-  let music=document.getElementById("bgMusic");
-  let screen=document.getElementById("screen3");
+  photo.style.opacity="0";
 
-  img.style.display="none";
-
-  // Fade sub text smoothly (no layout shift)
   subText.style.opacity="0";
 
-  // Slight zoom of whole screen
-  screen.style.transform="scale(1.05)";
-
-  // Darken background
   overlay.style.opacity="1";
 
-  // Grow main title
   mainTitle.style.fontSize="48px";
 
-  // Lower music slightly
-  music.volume = 0.5;
+  bgMusic.volume = 0.5;
 
   setTimeout(()=>{
-    video.style.display="block";
-    video.style.opacity="1";
-    video.style.transform="translateY(0)";
-    video.playbackRate = 0.65;
-    video.play();
+    finalVideo.playbackRate = 0.65;
+    finalVideo.play();
+    finalVideo.style.opacity="1";
   },1500);
 
 }
