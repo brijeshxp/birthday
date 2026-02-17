@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> HBD Kajal</title>
+<title>HBD Kajal</title>
 
 <style>
 body{
@@ -23,6 +23,7 @@ body{
   align-items:center;
   padding:30px 20px;
   position:relative;
+  transition:transform 2s ease;
 }
 
 .hidden{
@@ -32,7 +33,7 @@ body{
 h1{
   font-size:36px;
   margin-bottom:20px;
-  transition:all 1.5s ease;
+  transition:all 2s ease;
 }
 
 p{
@@ -66,22 +67,8 @@ button{
   to{ text-shadow:0 0 40px #ff2e6c; }
 }
 
-.bigTitle{
-  font-size:52px !important;
-}
-
-.pulse{
-  animation:pulse 2s infinite;
-}
-
-@keyframes pulse{
-  0%{ transform:scale(1); }
-  50%{ transform:scale(1.05); }
-  100%{ transform:scale(1); }
-}
-
 #subText{
-  transition:all 1s ease;
+  transition:opacity 2s ease;
 }
 
 .photo, video{
@@ -91,7 +78,7 @@ button{
   margin-top:30px;
   opacity:0;
   transform:translateY(40px);
-  transition:all 1s ease;
+  transition:all 1.5s ease;
 }
 
 .darkOverlay{
@@ -102,7 +89,7 @@ button{
   height:100%;
   background:rgba(0,0,0,0.5);
   opacity:0;
-  transition:opacity 1s ease;
+  transition:opacity 2s ease;
   pointer-events:none;
 }
 
@@ -123,6 +110,7 @@ button{
 
 <body>
 
+<!-- SCREEN 1 -->
 <div id="screen1" class="screen">
   <h1>📦 A Special Delivery...</h1>
   <p>To: Kajal</p>
@@ -130,11 +118,13 @@ button{
   <button onclick="openGift()">Open</button>
 </div>
 
+<!-- SCREEN 2 -->
 <div id="screen2" class="screen hidden">
   <div class="box" onclick="reveal()">🎁</div>
   <p style="font-size:22px;">Open at your own risk</p>
 </div>
 
+<!-- SCREEN 3 -->
 <div id="screen3" class="screen hidden">
 
   <div class="darkOverlay" id="overlay"></div>
@@ -232,33 +222,33 @@ function showVideo(){
   let mainTitle=document.getElementById("mainTitle");
   let overlay=document.getElementById("overlay");
   let music=document.getElementById("bgMusic");
+  let screen=document.getElementById("screen3");
 
   img.style.display="none";
 
-  // Fade out smaller text
+  // Fade sub text smoothly (no layout shift)
   subText.style.opacity="0";
-  subText.style.transform="translateY(-20px)";
+
+  // Slight zoom of whole screen
+  screen.style.transform="scale(1.05)";
 
   // Darken background
   overlay.style.opacity="1";
 
-  // Enlarge & pulse title
-  mainTitle.classList.add("bigTitle");
-  mainTitle.classList.add("pulse");
+  // Grow main title
+  mainTitle.style.fontSize="48px";
 
-  // Lower music volume slightly
+  // Lower music slightly
   music.volume = 0.5;
 
   setTimeout(()=>{
-    subText.style.display="none";
-
     video.style.display="block";
     video.style.opacity="1";
     video.style.transform="translateY(0)";
     video.playbackRate = 0.65;
     video.play();
+  },1500);
 
-  },1000);
 }
 
 </script>
