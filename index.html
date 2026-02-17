@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> HBD Kajal </title>
+<title>25 March</title>
 
 <style>
 body{
@@ -27,20 +27,21 @@ body{
 
 .hidden{ display:none; }
 
-h1{
-  font-size:36px;
-  margin-bottom:20px;
-  transition:all 1.5s ease;
-  z-index:2;
-}
-
 #dynamicText{
   font-size:22px;
-  margin-top:10px;
+  margin-top:20px;
   opacity:0;
   transition:opacity 1.5s ease;
   min-height:60px;
   z-index:2;
+}
+
+#finalTitle{
+  position:absolute;
+  font-size:48px;
+  opacity:0;
+  transition:opacity 2s ease;
+  z-index:3;
 }
 
 .photo{
@@ -75,7 +76,7 @@ h1{
   background:rgba(0,0,0,0.6);
   opacity:0;
   transition:opacity 2s ease;
-  z-index:1;
+  z-index:2;
 }
 
 button{
@@ -93,15 +94,6 @@ button{
   font-size:100px;
   cursor:pointer;
   margin-bottom:20px;
-}
-
-.glow{
-  animation:glow 2s infinite alternate;
-}
-
-@keyframes glow{
-  from{ text-shadow:0 0 10px #ff4f81; }
-  to{ text-shadow:0 0 40px #ff2e6c; }
 }
 
 .confetti{
@@ -122,9 +114,9 @@ button{
 <body>
 
 <div id="screen1" class="screen">
-  <h1>📦 A Special Delivery...</h1>
+  <h1>📦 A Midnight Delivery...</h1>
   <p>To: Kajal</p>
-  <p>25 March 2026 • 00:00</p>
+  <p>25 March • 00:00</p>
   <button onclick="openGift()">Open</button>
 </div>
 
@@ -141,7 +133,7 @@ button{
 
   <div class="darkOverlay" id="overlay"></div>
 
-  <h1 id="mainTitle" class="glow">Happy Birthday Kajal 🎂</h1>
+  <div id="finalTitle">Happy Birthday Kajal 🎂</div>
 
   <div id="dynamicText"></div>
 
@@ -223,7 +215,7 @@ function startSlideshow(){
       if(index < photos.length){
         setTimeout(nextSlide,3000);
       } else {
-        setTimeout(showVideo,3000);
+        setTimeout(showFinalMoment,3000);
       }
 
     },500);
@@ -232,21 +224,20 @@ function startSlideshow(){
   nextSlide();
 }
 
-function showVideo(){
+function showFinalMoment(){
 
   photo.style.opacity="0";
   dynamicText.style.opacity="0";
   overlay.style.opacity="1";
 
-  mainTitle.style.fontSize="48px";
   bgMusic.volume = 0.5;
 
   setTimeout(()=>{
+    finalTitle.style.opacity="1";
     finalVideo.playbackRate = 0.65;
     finalVideo.play();
     finalVideo.style.opacity="1";
   },1500);
-
 }
 
 </script>
