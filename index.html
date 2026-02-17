@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HBD Kajal</title>
+<title> HBD Kajal</title>
 
 <style>
 body{
@@ -22,6 +22,7 @@ body{
   justify-content:center;
   align-items:center;
   padding:30px 20px;
+  position:relative;
 }
 
 .hidden{
@@ -31,6 +32,7 @@ body{
 h1{
   font-size:36px;
   margin-bottom:20px;
+  transition:all 1.5s ease;
 }
 
 p{
@@ -64,6 +66,24 @@ button{
   to{ text-shadow:0 0 40px #ff2e6c; }
 }
 
+.bigTitle{
+  font-size:52px !important;
+}
+
+.pulse{
+  animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+  0%{ transform:scale(1); }
+  50%{ transform:scale(1.05); }
+  100%{ transform:scale(1); }
+}
+
+#subText{
+  transition:all 1s ease;
+}
+
 .photo, video{
   width:90%;
   max-width:400px;
@@ -72,6 +92,18 @@ button{
   opacity:0;
   transform:translateY(40px);
   transition:all 1s ease;
+}
+
+.darkOverlay{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.5);
+  opacity:0;
+  transition:opacity 1s ease;
+  pointer-events:none;
 }
 
 .confetti{
@@ -91,7 +123,6 @@ button{
 
 <body>
 
-<!-- SCREEN 1 -->
 <div id="screen1" class="screen">
   <h1>📦 A Special Delivery...</h1>
   <p>To: Kajal</p>
@@ -99,25 +130,30 @@ button{
   <button onclick="openGift()">Open</button>
 </div>
 
-<!-- SCREEN 2 -->
 <div id="screen2" class="screen hidden">
   <div class="box" onclick="reveal()">🎁</div>
-  <p style="font-size:22px;">Open at Your Risk</p>
+  <p style="font-size:22px;">Open at your own risk</p>
 </div>
 
-<!-- SCREEN 3 -->
 <div id="screen3" class="screen hidden">
-  <h1 class="glow">Happy Birthday Kajal 🎂</h1>
-  <p>Out of 8 billion people...</p>
-  <p>25th March chose someone rare.</p>
-  <p>And somehow, she chose us too.</p>
-  <p style="margin-top:15px;">— Brijesh, Raha & Rishan </p>
+
+  <div class="darkOverlay" id="overlay"></div>
+
+  <h1 id="mainTitle" class="glow">Happy Birthday Kajal 🎂</h1>
+
+  <div id="subText">
+    <p>Out of 8 billion people...</p>
+    <p>25th March chose someone rare.</p>
+    <p>And somehow, she chose us too.</p>
+    <p style="margin-top:15px;">— Brijesh, Raha & Rishan</p>
+  </div>
 
   <img id="photo" class="photo">
   
   <video id="finalVideo" playsinline muted style="display:none;">
     <source src="final.mp4" type="video/mp4">
   </video>
+
 </div>
 
 <audio id="bgMusic" src="music.mp3" loop></audio>
@@ -138,6 +174,7 @@ function reveal(){
 
   setTimeout(()=>{
     document.getElementById("screen3").classList.remove("hidden");
+    document.getElementById("bgMusic").volume = 1;
     document.getElementById("bgMusic").play();
     createConfetti();
     startPhotos();
@@ -191,14 +228,37 @@ function showVideo(){
 
   let img=document.getElementById("photo");
   let video=document.getElementById("finalVideo");
+  let subText=document.getElementById("subText");
+  let mainTitle=document.getElementById("mainTitle");
+  let overlay=document.getElementById("overlay");
+  let music=document.getElementById("bgMusic");
 
   img.style.display="none";
 
-  video.style.display="block";
-  video.style.opacity="1";
-  video.style.transform="translateY(0)";
-  video.playbackRate = 0.65;   // slow motion
-  video.play();
+  // Fade out smaller text
+  subText.style.opacity="0";
+  subText.style.transform="translateY(-20px)";
+
+  // Darken background
+  overlay.style.opacity="1";
+
+  // Enlarge & pulse title
+  mainTitle.classList.add("bigTitle");
+  mainTitle.classList.add("pulse");
+
+  // Lower music volume slightly
+  music.volume = 0.5;
+
+  setTimeout(()=>{
+    subText.style.display="none";
+
+    video.style.display="block";
+    video.style.opacity="1";
+    video.style.transform="translateY(0)";
+    video.playbackRate = 0.65;
+    video.play();
+
+  },1000);
 }
 
 </script>
