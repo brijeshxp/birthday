@@ -25,9 +25,7 @@ body{
   position:relative;
 }
 
-.hidden{
-  display:none;
-}
+.hidden{ display:none; }
 
 h1{
   font-size:36px;
@@ -36,39 +34,12 @@ h1{
   z-index:2;
 }
 
-p{
-  font-size:20px;
-  margin:8px 0;
-}
-
-button{
-  margin-top:25px;
-  padding:14px 32px;
-  font-size:18px;
-  border:none;
-  border-radius:30px;
-  background:#ff4f81;
-  color:white;
-  cursor:pointer;
-}
-
-.box{
-  font-size:100px;
-  cursor:pointer;
-  margin-bottom:20px;
-}
-
-.glow{
-  animation:glow 2s infinite alternate;
-}
-
-@keyframes glow{
-  from{ text-shadow:0 0 10px #ff4f81; }
-  to{ text-shadow:0 0 40px #ff2e6c; }
-}
-
-#subText{
+#dynamicText{
+  font-size:22px;
+  margin-top:10px;
+  opacity:0;
   transition:opacity 1.5s ease;
+  min-height:60px;
   z-index:2;
 }
 
@@ -105,6 +76,32 @@ button{
   opacity:0;
   transition:opacity 2s ease;
   z-index:1;
+}
+
+button{
+  margin-top:25px;
+  padding:14px 32px;
+  font-size:18px;
+  border:none;
+  border-radius:30px;
+  background:#ff4f81;
+  color:white;
+  cursor:pointer;
+}
+
+.box{
+  font-size:100px;
+  cursor:pointer;
+  margin-bottom:20px;
+}
+
+.glow{
+  animation:glow 2s infinite alternate;
+}
+
+@keyframes glow{
+  from{ text-shadow:0 0 10px #ff4f81; }
+  to{ text-shadow:0 0 40px #ff2e6c; }
 }
 
 .confetti{
@@ -146,12 +143,7 @@ button{
 
   <h1 id="mainTitle" class="glow">Happy Birthday Kajal 🎂</h1>
 
-  <div id="subText">
-    <p>Out of 8 billion people...</p>
-    <p>25th March chose someone rare.</p>
-    <p>And somehow, she chose us too.</p>
-    <p style="margin-top:15px;">— Brijesh, Raha & Rishan</p>
-  </div>
+  <div id="dynamicText"></div>
 
   <img id="photo" class="photo">
 
@@ -169,7 +161,6 @@ function openGift(){
 
 function reveal(){
   screen2.classList.add("hidden");
-
   heartbeat.play();
 
   setTimeout(()=>{
@@ -177,7 +168,7 @@ function reveal(){
     bgMusic.volume = 1;
     bgMusic.play();
     createConfetti();
-    startPhotos();
+    startSlideshow();
   },2500);
 }
 
@@ -193,46 +184,61 @@ function createConfetti(){
   }
 }
 
-function startPhotos(){
+function startSlideshow(){
 
   let photos=[
     "pic1.jpg","pic2.jpg","pic3.jpg","pic4.jpg",
     "pic5.jpg","pic6.jpg","pic7.jpg","pic8.jpg"
   ];
 
+  let texts=[
+    "Out of 8 billion people...",
+    "25th March chose someone rare.",
+    "And somehow, she chose us too.",
+    "— Brijesh, Raha & Rishan"
+  ];
+
   let index=0;
 
-  function showNext(){
+  function nextSlide(){
+
     photo.style.opacity="0";
-    photo.style.transform="translateY(40px)";
+    dynamicText.style.opacity="0";
 
     setTimeout(()=>{
-      photo.src=photos[index];
+
+      photo.src = photos[index];
       photo.style.opacity="1";
       photo.style.transform="translateY(0)";
+
+      if(index < texts.length){
+        dynamicText.innerHTML = texts[index];
+        dynamicText.style.opacity="1";
+      } else {
+        dynamicText.innerHTML = "";
+      }
+
       index++;
 
       if(index < photos.length){
-        setTimeout(showNext,3000);
+        setTimeout(nextSlide,3000);
       } else {
         setTimeout(showVideo,3000);
       }
-    },400);
+
+    },500);
   }
 
-  showNext();
+  nextSlide();
 }
 
 function showVideo(){
 
   photo.style.opacity="0";
-
-  subText.style.opacity="0";
-
+  dynamicText.style.opacity="0";
   overlay.style.opacity="1";
 
   mainTitle.style.fontSize="48px";
-
   bgMusic.volume = 0.5;
 
   setTimeout(()=>{
