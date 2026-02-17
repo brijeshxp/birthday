@@ -99,14 +99,16 @@ button:hover{
   }
 }
 
-.slideshow img{
-  width:220px;
-  height:300px;
+.photo{
+  position:absolute;
+  width:200px;
+  height:270px;
   object-fit:cover;
   border-radius:20px;
-  box-shadow:0 0 20px rgba(255,255,255,0.3);
-  margin-top:20px;
-  display:none;
+  box-shadow:0 25px 50px rgba(0,0,0,0.7);
+  opacity:0;
+  transform:translateY(-300px) rotate(0deg);
+  transition:all 1.8s ease;
 }
 </style>
 </head>
@@ -133,20 +135,8 @@ button:hover{
   <h1 class="glow">Happy Birthday Kajal 🎂</h1>
   <p>Out of 8 billion people...</p>
   <p>25th March chose someone rare.</p>
-  <p>And I’m lucky she chose me too.</p>
+  <p>And somehow, she chose me too.</p>
   <p style="margin-top:25px;">— Brijesh</p>
-
-  <div class="slideshow">
-    <img src="pic1.jpg" id="img1">
-    <img src="pic2.jpg" id="img2">
-    <img src="pic3.jpg" id="img3">
-    <img src="pic4.jpg" id="img1">
-    <img src="pic5.jpg" id="img2">
-    <img src="pic6.jpg" id="img3">
-    <img src="pic7.jpg" id="img1">
-    <img src="pic8.jpg" id="img2">
-    
-  </div>
 </div>
 
 <audio id="bgMusic" src="music.mp3" loop></audio>
@@ -171,12 +161,12 @@ function reveal(){
     document.getElementById("screen3").classList.remove("hidden");
     document.getElementById("bgMusic").play();
     createConfetti();
-    startSlideshow();
+    dropPhotos();
   },2500);
 }
 
 function createConfetti(){
-  for(let i=0;i<70;i++){
+  for(let i=0;i<80;i++){
     let c=document.createElement("div");
     c.className="confetti";
     c.innerHTML=["🎉","🎊","✨","🎈"][Math.floor(Math.random()*4)];
@@ -187,14 +177,38 @@ function createConfetti(){
   }
 }
 
-function startSlideshow(){
-  let images=["img1","img2","img3"];
-  let index=0;
-  setInterval(()=>{
-    document.querySelectorAll(".slideshow img").forEach(img=>img.style.display="none");
-    document.getElementById(images[index]).style.display="block";
-    index=(index+1)%images.length;
-  },3000);
+function dropPhotos(){
+
+  let photos = [
+    "pic1.jpg","pic2.jpg","pic3.jpg","pic4.jpg",
+    "pic5.jpg","pic6.jpg","pic7.jpg","pic8.jpg"
+  ];
+
+  photos.forEach((src, i) => {
+
+    setTimeout(()=>{
+
+      let img = document.createElement("img");
+      img.src = src;
+      img.className = "photo";
+
+      let left = 5 + Math.random()*80;
+      let top = 10 + Math.random()*70;
+      let rotate = Math.random()*40 - 20;
+
+      img.style.left = left + "vw";
+      img.style.top = top + "vh";
+
+      document.body.appendChild(img);
+
+      setTimeout(()=>{
+        img.style.opacity = "1";
+        img.style.transform = "translateY(0) rotate(" + rotate + "deg)";
+      },100);
+
+    }, i * 900);
+
+  });
 }
 
 </script>
