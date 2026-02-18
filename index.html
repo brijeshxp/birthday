@@ -88,27 +88,23 @@ button{
 
 
 #finalVideo{
-  position:absolute;
-  top:0;
-  left:0;
   width:100%;
-  height:100%;
-  object-fit:cover;
+  max-width:500px;
+  margin-top:30px;
+  border-radius:20px;
   opacity:0;
-  transition:opacity 2s ease;
-  z-index:1;
+  transition:all 2s ease;
+  object-fit:contain;   /* Important: no cropping */
 }
 
 .darkOverlay{
-  position:absolute;
-  top:0;
-  left:0;
   width:100%;
-  height:100%;
+  max-width:500px;
+  height:0;
   background:rgba(0,0,0,0.6);
   opacity:0;
-  transition:opacity 2s ease;
-  z-index:1;
+  transition:all 2s ease;
+  border-radius:20px;
 }
 
 .confetti{
@@ -233,19 +229,29 @@ function showVideo(){
 
   subText.style.opacity="0";
 
-  overlay.style.opacity="1";
-
   mainTitle.style.fontSize="48px";
 
   bgMusic.volume = 0.5;
 
   setTimeout(()=>{
+
+    // Calculate remaining height
+    let titleBottom = mainTitle.getBoundingClientRect().bottom;
+    let screenHeight = window.innerHeight;
+    let remaining = screenHeight - titleBottom - 40;
+
+    finalVideo.style.height = remaining + "px";
+    overlay.style.height = remaining + "px";
+
+    overlay.style.opacity="1";
+
     finalVideo.playbackRate = 0.65;
     finalVideo.play();
     finalVideo.style.opacity="1";
-  },1500);
 
+  },1500);
 }
+
 
 </script>
 
