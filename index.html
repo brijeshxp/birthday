@@ -24,7 +24,6 @@ body{
   position:relative;
 }
 
-
 .hidden{
   display:none;
 }
@@ -32,8 +31,10 @@ body{
 h1{
   font-size:32px;
   margin-bottom:20px;
-  transition:all 1.5s ease;
+  transition:all 1.2s ease;
   z-index:2;
+  transform:scale(1);
+  opacity:1;
 }
 
 p{
@@ -75,9 +76,9 @@ button{
 .photo{
   width:90%;
   max-width:400px;
-  height:420px;              /* Fixed height container */
-  object-fit:cover;          /* Crop bottom if needed */
-  object-position:top;       /* Always align from top */
+  height:420px;
+  object-fit:cover;
+  object-position:top;
   border-radius:20px;
   margin-top:30px;
   opacity:0;
@@ -85,7 +86,6 @@ button{
   transition:all 1s ease;
   z-index:2;
 }
-
 
 #finalVideo{
   position:absolute;
@@ -174,7 +174,6 @@ function openGift(){
 
 function reveal(){
   screen2.classList.add("hidden");
-
   heartbeat.play();
 
   setTimeout(()=>{
@@ -231,14 +230,17 @@ function startPhotos(){
 function showVideo(){
 
   photo.style.opacity="0";
-
   subText.style.opacity="0";
-
   overlay.style.opacity="1";
 
-  mainTitle.style.fontSize="32px";
-  mainTitle.innerHTML = "Happy Birthday Mumma 🎂";
+  // Smooth title transition
+  mainTitle.style.opacity="0";
 
+  setTimeout(()=>{
+    mainTitle.innerHTML = "Happy Birthday Mumma 🎂";
+    mainTitle.style.opacity="1";
+    mainTitle.style.transform="scale(1.15)";
+  },400);
 
   bgMusic.volume = 0.5;
 
