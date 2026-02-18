@@ -24,7 +24,6 @@ body{
   position:relative;
 }
 
-
 .hidden{
   display:none;
 }
@@ -75,9 +74,9 @@ button{
 .photo{
   width:90%;
   max-width:400px;
-  height:420px;              /* Fixed height container */
-  object-fit:cover;          /* Crop bottom if needed */
-  object-position:top;       /* Always align from top */
+  height:420px;
+  object-fit:cover;
+  object-position:top;
   border-radius:20px;
   margin-top:30px;
   opacity:0;
@@ -86,38 +85,23 @@ button{
   z-index:2;
 }
 
-
-#finalVideo{
-  width:100%;
+/* VIDEO CONTAINER */
+.videoContainer{
+  width:90%;
   max-width:500px;
   margin-top:30px;
-  border-radius:20px;
-  opacity:0;
-  transition:all 2s ease;
-  object-fit:contain;   /* Important: no cropping */
+  overflow:hidden;
+  transition:height 2s ease;
 }
 
-.darkOverlay{
+/* VIDEO */
+#finalVideo{
   width:100%;
-  max-width:500px;
-  height:0;
-  background:rgba(0,0,0,0.6);
+  height:100%;
+  object-fit:contain;
   opacity:0;
-  transition:all 2s ease;
+  transition:opacity 2s ease;
   border-radius:20px;
-}
-
-.confetti{
-  position:absolute;
-  font-size:22px;
-  animation:fall linear forwards;
-}
-
-@keyframes fall{
-  to{
-    transform:translateY(100vh) rotate(360deg);
-    opacity:0;
-  }
 }
 </style>
 </head>
@@ -138,12 +122,6 @@ button{
 
 <div id="screen3" class="screen hidden">
 
-  <video id="finalVideo" playsinline muted>
-    <source src="final.mp4" type="video/mp4">
-  </video>
-
-  <div class="darkOverlay" id="overlay"></div>
-
   <h1 id="mainTitle" class="glow">Happy Birthday Kajal 🎂</h1>
 
   <div id="subText">
@@ -154,6 +132,12 @@ button{
   </div>
 
   <img id="photo" class="photo">
+
+  <div class="videoContainer" id="videoContainer" style="height:0;">
+    <video id="finalVideo" playsinline muted>
+      <source src="final.mp4" type="video/mp4">
+    </video>
+  </div>
 
 </div>
 
@@ -169,7 +153,6 @@ function openGift(){
 
 function reveal(){
   screen2.classList.add("hidden");
-
   heartbeat.play();
 
   setTimeout(()=>{
@@ -186,8 +169,11 @@ function createConfetti(){
     let c=document.createElement("div");
     c.className="confetti";
     c.innerHTML=["🎉","✨","🎊","🎈"][Math.floor(Math.random()*4)];
+    c.style.position="absolute";
     c.style.left=Math.random()*100+"vw";
-    c.style.animationDuration=(Math.random()*3+2)+"s";
+    c.style.top="-20px";
+    c.style.fontSize="22px";
+    c.style.animation=`fall ${Math.random()*3+2}s linear forwards`;
     document.body.appendChild(c);
     setTimeout(()=>c.remove(),5000);
   }
@@ -226,24 +212,18 @@ function startPhotos(){
 function showVideo(){
 
   photo.style.opacity="0";
-
   subText.style.opacity="0";
 
   mainTitle.style.fontSize="48px";
-
   bgMusic.volume = 0.5;
 
   setTimeout(()=>{
 
-    // Calculate remaining height
     let titleBottom = mainTitle.getBoundingClientRect().bottom;
     let screenHeight = window.innerHeight;
-    let remaining = screenHeight - titleBottom - 40;
+    let remainingHeight = screenHeight - titleBottom - 40;
 
-    finalVideo.style.height = remaining + "px";
-    overlay.style.height = remaining + "px";
-
-    overlay.style.opacity="1";
+    videoContainer.style.height = remainingHeight + "px";
 
     finalVideo.playbackRate = 0.65;
     finalVideo.play();
@@ -252,8 +232,8 @@ function showVideo(){
   },1500);
 }
 
-
 </script>
 
 </body>
 </html>
+
