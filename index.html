@@ -85,23 +85,18 @@ button{
   z-index:2;
 }
 
-/* VIDEO CONTAINER */
-.videoContainer{
+/* VIDEO — ABSOLUTE POSITIONED */
+#finalVideo{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
   width:90%;
   max-width:500px;
-  margin-top:30px;
-  overflow:hidden;
-  transition:height 2s ease;
-}
-
-/* VIDEO */
-#finalVideo{
-  width:100%;
-  height:100%;
   object-fit:contain;
   opacity:0;
-  transition:opacity 2s ease;
+  transition:all 2s ease;
   border-radius:20px;
+  z-index:1;
 }
 </style>
 </head>
@@ -126,18 +121,16 @@ button{
 
   <div id="subText">
     <p>Out of 8 billion people...</p>
-    <p>25th March chose someone rare.</p>
+    <p id="secondLine">25th March chose someone rare.</p>
     <p>And somehow, she chose us too.</p>
     <p style="margin-top:15px;">— Brijesh, Raha & Rishan</p>
   </div>
 
   <img id="photo" class="photo">
 
-  <div class="videoContainer" id="videoContainer" style="height:0;">
-    <video id="finalVideo" playsinline muted>
-      <source src="final.mp4" type="video/mp4">
-    </video>
-  </div>
+  <video id="finalVideo" playsinline muted>
+    <source src="final.mp4" type="video/mp4">
+  </video>
 
 </div>
 
@@ -159,24 +152,8 @@ function reveal(){
     screen3.classList.remove("hidden");
     bgMusic.volume = 1;
     bgMusic.play();
-    createConfetti();
     startPhotos();
   },2500);
-}
-
-function createConfetti(){
-  for(let i=0;i<60;i++){
-    let c=document.createElement("div");
-    c.className="confetti";
-    c.innerHTML=["🎉","✨","🎊","🎈"][Math.floor(Math.random()*4)];
-    c.style.position="absolute";
-    c.style.left=Math.random()*100+"vw";
-    c.style.top="-20px";
-    c.style.fontSize="22px";
-    c.style.animation=`fall ${Math.random()*3+2}s linear forwards`;
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(),5000);
-  }
 }
 
 function startPhotos(){
@@ -219,11 +196,16 @@ function showVideo(){
 
   setTimeout(()=>{
 
-    let titleBottom = mainTitle.getBoundingClientRect().bottom;
-    let screenHeight = window.innerHeight;
-    let remainingHeight = screenHeight - titleBottom - 40;
+    let secondLinePos = secondLine.getBoundingClientRect();
+    let screenTop = screen3.getBoundingClientRect().top;
 
-    videoContainer.style.height = remainingHeight + "px";
+    let topPosition = secondLinePos.top - screenTop;
+
+    let screenHeight = window.innerHeight;
+    let remainingHeight = screenHeight - secondLinePos.top - 20;
+
+    finalVideo.style.top = topPosition + "px";
+    finalVideo.style.height = remainingHeight + "px";
 
     finalVideo.playbackRate = 0.65;
     finalVideo.play();
@@ -236,4 +218,5 @@ function showVideo(){
 
 </body>
 </html>
+
 
