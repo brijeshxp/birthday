@@ -24,6 +24,7 @@ body{
   position:relative;
 }
 
+
 .hidden{
   display:none;
 }
@@ -74,9 +75,9 @@ button{
 .photo{
   width:90%;
   max-width:400px;
-  height:420px;
-  object-fit:cover;
-  object-position:top;
+  height:420px;              /* Fixed height container */
+  object-fit:cover;          /* Crop bottom if needed */
+  object-position:top;       /* Always align from top */
   border-radius:20px;
   margin-top:30px;
   opacity:0;
@@ -85,18 +86,42 @@ button{
   z-index:2;
 }
 
-/* VIDEO — ABSOLUTE POSITIONED */
+
 #finalVideo{
   position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-  width:90%;
-  max-width:500px;
-  object-fit:contain;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
   opacity:0;
-  transition:all 2s ease;
-  border-radius:20px;
+  transition:opacity 2s ease;
   z-index:1;
+}
+
+.darkOverlay{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.6);
+  opacity:0;
+  transition:opacity 2s ease;
+  z-index:1;
+}
+
+.confetti{
+  position:absolute;
+  font-size:22px;
+  animation:fall linear forwards;
+}
+
+@keyframes fall{
+  to{
+    transform:translateY(100vh) rotate(360deg);
+    opacity:0;
+  }
 }
 </style>
 </head>
@@ -117,20 +142,22 @@ button{
 
 <div id="screen3" class="screen hidden">
 
+  <video id="finalVideo" playsinline muted>
+    <source src="final.mp4" type="video/mp4">
+  </video>
+
+  <div class="darkOverlay" id="overlay"></div>
+
   <h1 id="mainTitle" class="glow">Happy Birthday Kajal 🎂</h1>
 
   <div id="subText">
     <p>Out of 8 billion people...</p>
-    <p id="secondLine">25th March chose someone rare.</p>
+    <p>25th March chose someone rare.</p>
     <p>And somehow, she chose us too.</p>
     <p style="margin-top:15px;">— Brijesh, Raha & Rishan</p>
   </div>
 
   <img id="photo" class="photo">
-
-  <video id="finalVideo" playsinline muted>
-    <source src="final.mp4" type="video/mp4">
-  </video>
 
 </div>
 
@@ -146,14 +173,28 @@ function openGift(){
 
 function reveal(){
   screen2.classList.add("hidden");
+
   heartbeat.play();
 
   setTimeout(()=>{
     screen3.classList.remove("hidden");
     bgMusic.volume = 1;
     bgMusic.play();
+    createConfetti();
     startPhotos();
   },2500);
+}
+
+function createConfetti(){
+  for(let i=0;i<60;i++){
+    let c=document.createElement("div");
+    c.className="confetti";
+    c.innerHTML=["🎉","✨","🎊","🎈"][Math.floor(Math.random()*4)];
+    c.style.left=Math.random()*100+"vw";
+    c.style.animationDuration=(Math.random()*3+2)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),5000);
+  }
 }
 
 function startPhotos(){
@@ -189,34 +230,24 @@ function startPhotos(){
 function showVideo(){
 
   photo.style.opacity="0";
+
   subText.style.opacity="0";
 
+  overlay.style.opacity="1";
+
   mainTitle.style.fontSize="48px";
+
   bgMusic.volume = 0.5;
 
   setTimeout(()=>{
-
-    let secondLinePos = secondLine.getBoundingClientRect();
-    let screenTop = screen3.getBoundingClientRect().top;
-
-    let topPosition = secondLinePos.top - screenTop;
-
-    let screenHeight = window.innerHeight;
-    let remainingHeight = screenHeight - secondLinePos.top - 20;
-
-    finalVideo.style.top = topPosition + "px";
-    finalVideo.style.height = remainingHeight + "px";
-
     finalVideo.playbackRate = 0.65;
     finalVideo.play();
     finalVideo.style.opacity="1";
-
   },1500);
+
 }
 
 </script>
 
 </body>
 </html>
-
-
